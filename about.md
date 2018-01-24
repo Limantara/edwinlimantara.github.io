@@ -4,12 +4,6 @@ title: About
 permalink: /about/
 ---
 
-Some information about you!
+I am a software engineer at Apple. I currently reside in the Bay Area. 
 
-### More Information
-
-A place to include any other types of information that you'd like to include about yourself.
-
-### Contact me
-
-[email@domain.com](mailto:email@domain.com)
+I start to develop interests in learning algorithms and systems during my graduate studies at the University of California, Los Angeles. 
