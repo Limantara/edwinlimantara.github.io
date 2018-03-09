@@ -1,132 +1,304 @@
-{
-  "cells": [
-    {
-      "metadata": {
-        "_cell_guid": "ea55f4e0-a407-4f41-86fe-87e87a90c91e",
-        "_uuid": "9b93fe25ab7a6b1497b6cf2c911e483230dcc9fb",
-        "collapsed": true,
-        "trusted": true
-      },
-      "cell_type": "code",
-      "source": "import numpy as np \nimport pandas as pd \nfrom IPython.core.display import display, HTML",
-      "execution_count": 60,
-      "outputs": []
-    },
-    {
-      "metadata": {
-        "_cell_guid": "c7e313c5-54cc-4bc2-87f8-5d9a6875f8c2",
-        "_uuid": "ab4329ab4c09ed7cbe63ec863a51cdbc1d6a719c",
-        "collapsed": true,
-        "trusted": true
-      },
-      "cell_type": "code",
-      "source": "df = pd.DataFrame(pd.read_csv(\"../input/ks-projects-201801.csv\"))",
-      "execution_count": 61,
-      "outputs": []
-    },
-    {
-      "metadata": {
-        "_cell_guid": "00f64a35-ac0e-4665-8946-5c5b58ab42ee",
-        "_uuid": "e9753073c694d478148d11736ab9b0fd640a76a3",
-        "trusted": true
-      },
-      "cell_type": "code",
-      "source": "all = df['main_category'].value_counts()\nsuccessful = df['main_category'][df['state'] == 'successful'].value_counts()\ndf2 = pd.DataFrame({'all': all, 'successful': successful})\ndf2.plot.bar()",
-      "execution_count": 62,
-      "outputs": [
-        {
-          "data": {
-            "text/plain": "<matplotlib.axes._subplots.AxesSubplot at 0x7f356440fef0>"
-          },
-          "execution_count": 62,
-          "metadata": {},
-          "output_type": "execute_result"
-        },
-        {
-          "data": {
-            "image/png": "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\n",
-            "text/plain": "<matplotlib.figure.Figure at 0x7f356440f630>"
-          },
-          "metadata": {},
-          "output_type": "display_data"
-        }
-      ]
-    },
-    {
-      "metadata": {
-        "trusted": true,
-        "_uuid": "55b5f280f078b3e762925c81eb5a3d79fbb44700"
-      },
-      "cell_type": "code",
-      "source": "success_rate = successful / all.astype(float)\ndf3 = pd.DataFrame({'success_rate': success_rate})\noutput = df3.to_html(formatters={'success_rate': '{:,.2%}'.format})\n\ndisplay(HTML(output))",
-      "execution_count": 74,
-      "outputs": [
-        {
-          "data": {
-            "text/html": "<table border=\"1\" class=\"dataframe\">\n  <thead>\n    <tr style=\"text-align: right;\">\n      <th></th>\n      <th>success_rate</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <th>Art</th>\n      <td>40.88%</td>\n    </tr>\n    <tr>\n      <th>Comics</th>\n      <td>54.00%</td>\n    </tr>\n    <tr>\n      <th>Crafts</th>\n      <td>24.01%</td>\n    </tr>\n    <tr>\n      <th>Dance</th>\n      <td>62.05%</td>\n    </tr>\n    <tr>\n      <th>Design</th>\n      <td>35.08%</td>\n    </tr>\n    <tr>\n      <th>Fashion</th>\n      <td>24.51%</td>\n    </tr>\n    <tr>\n      <th>Film &amp; Video</th>\n      <td>37.15%</td>\n    </tr>\n    <tr>\n      <th>Food</th>\n      <td>24.73%</td>\n    </tr>\n    <tr>\n      <th>Games</th>\n      <td>35.53%</td>\n    </tr>\n    <tr>\n      <th>Journalism</th>\n      <td>21.28%</td>\n    </tr>\n    <tr>\n      <th>Music</th>\n      <td>46.61%</td>\n    </tr>\n    <tr>\n      <th>Photography</th>\n      <td>30.66%</td>\n    </tr>\n    <tr>\n      <th>Publishing</th>\n      <td>30.85%</td>\n    </tr>\n    <tr>\n      <th>Technology</th>\n      <td>19.75%</td>\n    </tr>\n    <tr>\n      <th>Theater</th>\n      <td>59.87%</td>\n    </tr>\n  </tbody>\n</table>",
-            "text/plain": "<IPython.core.display.HTML object>"
-          },
-          "metadata": {},
-          "output_type": "display_data"
-        }
-      ]
-    },
-    {
-      "metadata": {
-        "trusted": true,
-        "_uuid": "2c261f910e6cb207f3bb1767c57d88c1180360d4"
-      },
-      "cell_type": "code",
-      "source": "is_USA = df['currency'] == 'USD'\nwas_successful = df['state'] == 'successful'\nwas_failed = df['state'] == 'failed'\n\ndf4 = df[['main_category', 'usd pledged', 'usd_pledged_real', 'usd_goal_real']]\n\nprint(df4[is_USA & was_successful].groupby('main_category').median())\nprint('\\n')\nprint(df4[is_USA & was_failed].groupby('main_category').median())",
-      "execution_count": 102,
-      "outputs": [
-        {
-          "name": "stdout",
-          "output_type": "stream",
-          "text": "               usd pledged  usd_pledged_real  usd_goal_real\nmain_category                                              \nArt               2312.500          2797.250         2000.0\nComics            3023.065          4184.000         3000.0\nCrafts            1274.000          1963.500         1000.0\nDance             3066.500          3545.000         3000.0\nDesign           10186.000         15435.000         8000.0\nFashion           4654.500          6586.500         5000.0\nFilm & Video      5032.000          5500.010         5000.0\nFood              6902.000          9538.000         7500.0\nGames             7869.005         11196.665         5000.0\nJournalism        3102.000          3975.000         3000.0\nMusic             3385.500          4075.000         3500.0\nPhotography       3132.000          3784.000         3000.0\nPublishing        3079.000          4096.000         3000.0\nTechnology       14777.380         24652.500        10800.0\nTheater           2960.000          3185.000         3000.0\n\n\n               usd pledged  usd_pledged_real  usd_goal_real\nmain_category                                              \nArt                   55.0              80.0         4000.0\nComics               178.0             250.0         5000.0\nCrafts                25.0              38.0         3000.0\nDance                100.0             124.0         5000.0\nDesign               339.5             477.0        13000.0\nFashion               50.0              63.0         5500.0\nFilm & Video         101.0             125.0        10000.0\nFood                  75.0             101.0        12000.0\nGames                196.0             275.0        10000.0\nJournalism            14.0              25.0         5000.0\nMusic                 56.0              75.0         5000.0\nPhotography           51.0              65.0         5000.0\nPublishing            50.0              65.0         5000.0\nTechnology            72.0             110.0        20000.0\nTheater              141.0             164.0         5000.0\n"
-        }
-      ]
-    },
-    {
-      "metadata": {
-        "trusted": true,
-        "_uuid": "b128acf4fcb665bbbc92e10b6badd0a458b18ea1"
-      },
-      "cell_type": "code",
-      "source": "df.head()",
-      "execution_count": 28,
-      "outputs": [
-        {
-          "data": {
-            "text/html": "<div>\n<style>\n    .dataframe thead tr:only-child th {\n        text-align: right;\n    }\n\n    .dataframe thead th {\n        text-align: left;\n    }\n\n    .dataframe tbody tr th {\n        vertical-align: top;\n    }\n</style>\n<table border=\"1\" class=\"dataframe\">\n  <thead>\n    <tr style=\"text-align: right;\">\n      <th></th>\n      <th>ID</th>\n      <th>name</th>\n      <th>category</th>\n      <th>main_category</th>\n      <th>currency</th>\n      <th>deadline</th>\n      <th>goal</th>\n      <th>launched</th>\n      <th>pledged</th>\n      <th>state</th>\n      <th>backers</th>\n      <th>country</th>\n      <th>usd pledged</th>\n      <th>usd_pledged_real</th>\n      <th>usd_goal_real</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <th>0</th>\n      <td>1000002330</td>\n      <td>The Songs of Adelaide &amp; Abullah</td>\n      <td>Poetry</td>\n      <td>Publishing</td>\n      <td>GBP</td>\n      <td>2015-10-09</td>\n      <td>1000.0</td>\n      <td>2015-08-11 12:12:28</td>\n      <td>0.0</td>\n      <td>failed</td>\n      <td>0</td>\n      <td>GB</td>\n      <td>0.0</td>\n      <td>0.0</td>\n      <td>1533.95</td>\n    </tr>\n    <tr>\n      <th>1</th>\n      <td>1000003930</td>\n      <td>Greeting From Earth: ZGAC Arts Capsule For ET</td>\n      <td>Narrative Film</td>\n      <td>Film &amp; Video</td>\n      <td>USD</td>\n      <td>2017-11-01</td>\n      <td>30000.0</td>\n      <td>2017-09-02 04:43:57</td>\n      <td>2421.0</td>\n      <td>failed</td>\n      <td>15</td>\n      <td>US</td>\n      <td>100.0</td>\n      <td>2421.0</td>\n      <td>30000.00</td>\n    </tr>\n    <tr>\n      <th>2</th>\n      <td>1000004038</td>\n      <td>Where is Hank?</td>\n      <td>Narrative Film</td>\n      <td>Film &amp; Video</td>\n      <td>USD</td>\n      <td>2013-02-26</td>\n      <td>45000.0</td>\n      <td>2013-01-12 00:20:50</td>\n      <td>220.0</td>\n      <td>failed</td>\n      <td>3</td>\n      <td>US</td>\n      <td>220.0</td>\n      <td>220.0</td>\n      <td>45000.00</td>\n    </tr>\n    <tr>\n      <th>3</th>\n      <td>1000007540</td>\n      <td>ToshiCapital Rekordz Needs Help to Complete Album</td>\n      <td>Music</td>\n      <td>Music</td>\n      <td>USD</td>\n      <td>2012-04-16</td>\n      <td>5000.0</td>\n      <td>2012-03-17 03:24:11</td>\n      <td>1.0</td>\n      <td>failed</td>\n      <td>1</td>\n      <td>US</td>\n      <td>1.0</td>\n      <td>1.0</td>\n      <td>5000.00</td>\n    </tr>\n    <tr>\n      <th>4</th>\n      <td>1000011046</td>\n      <td>Community Film Project: The Art of Neighborhoo...</td>\n      <td>Film &amp; Video</td>\n      <td>Film &amp; Video</td>\n      <td>USD</td>\n      <td>2015-08-29</td>\n      <td>19500.0</td>\n      <td>2015-07-04 08:35:03</td>\n      <td>1283.0</td>\n      <td>canceled</td>\n      <td>14</td>\n      <td>US</td>\n      <td>1283.0</td>\n      <td>1283.0</td>\n      <td>19500.00</td>\n    </tr>\n  </tbody>\n</table>\n</div>",
-            "text/plain": "           ID                                               name  \\\n0  1000002330                    The Songs of Adelaide & Abullah   \n1  1000003930      Greeting From Earth: ZGAC Arts Capsule For ET   \n2  1000004038                                     Where is Hank?   \n3  1000007540  ToshiCapital Rekordz Needs Help to Complete Album   \n4  1000011046  Community Film Project: The Art of Neighborhoo...   \n\n         category main_category currency    deadline     goal  \\\n0          Poetry    Publishing      GBP  2015-10-09   1000.0   \n1  Narrative Film  Film & Video      USD  2017-11-01  30000.0   \n2  Narrative Film  Film & Video      USD  2013-02-26  45000.0   \n3           Music         Music      USD  2012-04-16   5000.0   \n4    Film & Video  Film & Video      USD  2015-08-29  19500.0   \n\n              launched  pledged     state  backers country  usd pledged  \\\n0  2015-08-11 12:12:28      0.0    failed        0      GB          0.0   \n1  2017-09-02 04:43:57   2421.0    failed       15      US        100.0   \n2  2013-01-12 00:20:50    220.0    failed        3      US        220.0   \n3  2012-03-17 03:24:11      1.0    failed        1      US          1.0   \n4  2015-07-04 08:35:03   1283.0  canceled       14      US       1283.0   \n\n   usd_pledged_real  usd_goal_real  \n0               0.0        1533.95  \n1            2421.0       30000.00  \n2             220.0       45000.00  \n3               1.0        5000.00  \n4            1283.0       19500.00  "
-          },
-          "execution_count": 28,
-          "metadata": {},
-          "output_type": "execute_result"
-        }
-      ]
+
+
+```python
+import numpy as np 
+import pandas as pd 
+from IPython.core.display import display, HTML
+```
+
+
+```python
+df = pd.DataFrame(pd.read_csv("../input/ks-projects-201801.csv"))
+```
+
+
+```python
+all = df['main_category'].value_counts()
+successful = df['main_category'][df['state'] == 'successful'].value_counts()
+df2 = pd.DataFrame({'all': all, 'successful': successful})
+df2.plot.bar()
+```
+
+
+
+
+    <matplotlib.axes._subplots.AxesSubplot at 0x7f356440fef0>
+
+
+
+
+![png](notebook_files/notebook_2_1.png)
+
+
+
+```python
+success_rate = successful / all.astype(float)
+df3 = pd.DataFrame({'success_rate': success_rate})
+output = df3.to_html(formatters={'success_rate': '{:,.2%}'.format})
+
+display(HTML(output))
+```
+
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>success_rate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Art</th>
+      <td>40.88%</td>
+    </tr>
+    <tr>
+      <th>Comics</th>
+      <td>54.00%</td>
+    </tr>
+    <tr>
+      <th>Crafts</th>
+      <td>24.01%</td>
+    </tr>
+    <tr>
+      <th>Dance</th>
+      <td>62.05%</td>
+    </tr>
+    <tr>
+      <th>Design</th>
+      <td>35.08%</td>
+    </tr>
+    <tr>
+      <th>Fashion</th>
+      <td>24.51%</td>
+    </tr>
+    <tr>
+      <th>Film &amp; Video</th>
+      <td>37.15%</td>
+    </tr>
+    <tr>
+      <th>Food</th>
+      <td>24.73%</td>
+    </tr>
+    <tr>
+      <th>Games</th>
+      <td>35.53%</td>
+    </tr>
+    <tr>
+      <th>Journalism</th>
+      <td>21.28%</td>
+    </tr>
+    <tr>
+      <th>Music</th>
+      <td>46.61%</td>
+    </tr>
+    <tr>
+      <th>Photography</th>
+      <td>30.66%</td>
+    </tr>
+    <tr>
+      <th>Publishing</th>
+      <td>30.85%</td>
+    </tr>
+    <tr>
+      <th>Technology</th>
+      <td>19.75%</td>
+    </tr>
+    <tr>
+      <th>Theater</th>
+      <td>59.87%</td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+```python
+is_USA = df['currency'] == 'USD'
+was_successful = df['state'] == 'successful'
+was_failed = df['state'] == 'failed'
+
+df4 = df[['main_category', 'usd pledged', 'usd_pledged_real', 'usd_goal_real']]
+
+print(df4[is_USA & was_successful].groupby('main_category').median())
+print('\n')
+print(df4[is_USA & was_failed].groupby('main_category').median())
+```
+
+                   usd pledged  usd_pledged_real  usd_goal_real
+    main_category                                              
+    Art               2312.500          2797.250         2000.0
+    Comics            3023.065          4184.000         3000.0
+    Crafts            1274.000          1963.500         1000.0
+    Dance             3066.500          3545.000         3000.0
+    Design           10186.000         15435.000         8000.0
+    Fashion           4654.500          6586.500         5000.0
+    Film & Video      5032.000          5500.010         5000.0
+    Food              6902.000          9538.000         7500.0
+    Games             7869.005         11196.665         5000.0
+    Journalism        3102.000          3975.000         3000.0
+    Music             3385.500          4075.000         3500.0
+    Photography       3132.000          3784.000         3000.0
+    Publishing        3079.000          4096.000         3000.0
+    Technology       14777.380         24652.500        10800.0
+    Theater           2960.000          3185.000         3000.0
+    
+    
+                   usd pledged  usd_pledged_real  usd_goal_real
+    main_category                                              
+    Art                   55.0              80.0         4000.0
+    Comics               178.0             250.0         5000.0
+    Crafts                25.0              38.0         3000.0
+    Dance                100.0             124.0         5000.0
+    Design               339.5             477.0        13000.0
+    Fashion               50.0              63.0         5500.0
+    Film & Video         101.0             125.0        10000.0
+    Food                  75.0             101.0        12000.0
+    Games                196.0             275.0        10000.0
+    Journalism            14.0              25.0         5000.0
+    Music                 56.0              75.0         5000.0
+    Photography           51.0              65.0         5000.0
+    Publishing            50.0              65.0         5000.0
+    Technology            72.0             110.0        20000.0
+    Theater              141.0             164.0         5000.0
+
+
+
+```python
+df.head()
+```
+
+
+
+
+<div>
+<style>
+    .dataframe thead tr:only-child th {
+        text-align: right;
     }
-  ],
-  "metadata": {
-    "kernelspec": {
-      "display_name": "Python 3",
-      "language": "python",
-      "name": "python3"
-    },
-    "language_info": {
-      "codemirror_mode": {
-        "name": "ipython",
-        "version": 3
-      },
-      "file_extension": ".py",
-      "mimetype": "text/x-python",
-      "name": "python",
-      "nbconvert_exporter": "python",
-      "pygments_lexer": "ipython3",
-      "version": "3.6.4"
+
+    .dataframe thead th {
+        text-align: left;
     }
-  },
-  "nbformat": 4,
-  "nbformat_minor": 1
-}
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ID</th>
+      <th>name</th>
+      <th>category</th>
+      <th>main_category</th>
+      <th>currency</th>
+      <th>deadline</th>
+      <th>goal</th>
+      <th>launched</th>
+      <th>pledged</th>
+      <th>state</th>
+      <th>backers</th>
+      <th>country</th>
+      <th>usd pledged</th>
+      <th>usd_pledged_real</th>
+      <th>usd_goal_real</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1000002330</td>
+      <td>The Songs of Adelaide &amp; Abullah</td>
+      <td>Poetry</td>
+      <td>Publishing</td>
+      <td>GBP</td>
+      <td>2015-10-09</td>
+      <td>1000.0</td>
+      <td>2015-08-11 12:12:28</td>
+      <td>0.0</td>
+      <td>failed</td>
+      <td>0</td>
+      <td>GB</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1533.95</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1000003930</td>
+      <td>Greeting From Earth: ZGAC Arts Capsule For ET</td>
+      <td>Narrative Film</td>
+      <td>Film &amp; Video</td>
+      <td>USD</td>
+      <td>2017-11-01</td>
+      <td>30000.0</td>
+      <td>2017-09-02 04:43:57</td>
+      <td>2421.0</td>
+      <td>failed</td>
+      <td>15</td>
+      <td>US</td>
+      <td>100.0</td>
+      <td>2421.0</td>
+      <td>30000.00</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1000004038</td>
+      <td>Where is Hank?</td>
+      <td>Narrative Film</td>
+      <td>Film &amp; Video</td>
+      <td>USD</td>
+      <td>2013-02-26</td>
+      <td>45000.0</td>
+      <td>2013-01-12 00:20:50</td>
+      <td>220.0</td>
+      <td>failed</td>
+      <td>3</td>
+      <td>US</td>
+      <td>220.0</td>
+      <td>220.0</td>
+      <td>45000.00</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1000007540</td>
+      <td>ToshiCapital Rekordz Needs Help to Complete Album</td>
+      <td>Music</td>
+      <td>Music</td>
+      <td>USD</td>
+      <td>2012-04-16</td>
+      <td>5000.0</td>
+      <td>2012-03-17 03:24:11</td>
+      <td>1.0</td>
+      <td>failed</td>
+      <td>1</td>
+      <td>US</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>5000.00</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1000011046</td>
+      <td>Community Film Project: The Art of Neighborhoo...</td>
+      <td>Film &amp; Video</td>
+      <td>Film &amp; Video</td>
+      <td>USD</td>
+      <td>2015-08-29</td>
+      <td>19500.0</td>
+      <td>2015-07-04 08:35:03</td>
+      <td>1283.0</td>
+      <td>canceled</td>
+      <td>14</td>
+      <td>US</td>
+      <td>1283.0</td>
+      <td>1283.0</td>
+      <td>19500.00</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
