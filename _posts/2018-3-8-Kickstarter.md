@@ -27,7 +27,7 @@ df2.plot.bar()
 
 
 
-![png](notebook_files/notebook_2_1.png)
+![png]({{"images/notebook_2_1.png"}})
 
 
 
