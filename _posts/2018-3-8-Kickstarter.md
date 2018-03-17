@@ -19,14 +19,6 @@ df2 = pd.DataFrame({'all': all, 'successful': successful})
 df2.plot.bar()
 ```
 
-
-
-
-    <matplotlib.axes._subplots.AxesSubplot at 0x7f356440fef0>
-
-
-
-
 ![png]({{"../images/notebook_2_1.png"}})
 
 
