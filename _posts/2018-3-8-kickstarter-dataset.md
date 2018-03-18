@@ -205,7 +205,7 @@ Another interesting finding here is that the unsuccessful projects tend to try t
 
 # tl;dr
 
-So a conclusion I can draw from exploring the Kaggle dataset here is that the being in a popular category doesn't automatically make a project more successful. 
+So a conclusion I can draw from exploring the Kaggle dataset here is that being in a popular category doesn't automatically make a project more successful. 
 
 Though it is still not very clear what makes a project successful, but we found that the successful projects tend to raise less money than its unsuccessful counterpart. And this is universally true for all categories.
 
