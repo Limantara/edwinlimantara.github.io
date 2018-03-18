@@ -178,7 +178,7 @@ Sure enough successful Dance projects have relatively low median value. This is 
 
 On a different note, looks like Crafts has a pretty low median value despite having a low success rate.
 
-It's still hard to draw a conclusion now, let's take a look at the unsuccessful projects next.
+Let's take a look at the unsuccessful projects next.
 ```    
                    usd pledged  usd_pledged_real  usd_goal_real
     main_category                                              
@@ -201,4 +201,12 @@ It's still hard to draw a conclusion now, let's take a look at the unsuccessful 
 
 Technology still has the highest median goal. In fact, the unsuccessful Technology projects try to raise double than its successful counterpart! 
 
-Another interesting finding here is that the unsuccessful projects tend to raise very little money. 
+Another interesting finding here is that the unsuccessful projects tend to try to raise a lot of money yet only get very little out of it. Looks like the unsuccessful projects might not have been very carefully thought out.
+
+# tl;dr
+
+So a conclusion I can draw from exploring the Kaggle dataset here is that the being in a popular category doesn't automatically make a project more successful. 
+
+Though it is still not very clear what makes a project successful, but we found that the successful projects tend to raise less money than its unsuccessful counterpart. And this is universally true for all categories.
+
+Finally we also found that unsuccessful projects tend to get significantly lower funding than its initial goal, which might tell that those projects are not well thought out.

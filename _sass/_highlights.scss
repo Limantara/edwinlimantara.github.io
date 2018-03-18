@@ -2,12 +2,21 @@
 .highlight {
   background-color: #efefef;
   border: 1px solid #ddd;
-  margin: 10px 0 10px 0;
+  margin: 0;
   overflow: scroll;
+}
+
+pre.highlight {
+	padding: 10px;
+}
+
+div.highlight {
+	margin: 10px 0;
 }
 
 code {
   font-family:'Bitstream Vera Sans Mono','Courier', monospace;
+  font-size: 14px !important;
 }
 
 .highlight .c { color: #586E75 } /* Comment */
